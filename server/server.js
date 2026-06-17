@@ -1,0 +1,50 @@
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
+const cookieParser = require('cookie-parser');
+const csurf = require('csurf');
+
+const authRoutes = require('./routes/auth');
+const categoryRoutes = require('./routes/categories');
+const transactionRoutes = require('./routes/transactions');
+const goalRoutes = require('./routes/goals');
+const savingRoutes = require('./routes/savings');
+const insightRoutes = require('./routes/insights');
+const adminRoutes = require('./routes/admin');
+
+const app = express();
+
+app.use(helmet());
+app.use(cors({
+  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  credentials: true
+}));
+
+app.use(express.json());
+app.use(cookieParser());
+
+const csrfProtection = csurf({ cookie: true });
+app.use(csrfProtection);
+
+app.get('/api/csrf-token', (req, res) => {
+  res.json({ csrfToken: req.csrfToken() });
+});
+
+app.use('/api/auth', authRoutes);
+app.use('/api/categories', categoryRoutes);
+app.use('/api/transactions', transactionRoutes);
+app.use('/api/goals', goalRoutes);
+app.use('/api/savings', savingRoutes);
+app.use('/api/insights', insightRoutes);
+app.use('/api/admin', adminRoutes);
+
+app.use((err, req, res, next) => {
+  if (err.code !== 'EBADCSRFTOKEN') return next(err);
+  res.status(403).json({ error: 'Invalid CSRF token' });
+});
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
