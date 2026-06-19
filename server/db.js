@@ -2,15 +2,6 @@ const { Pool } = require('pg');
 const net = require('net');
 require('dotenv').config();
 
-if (process.env.DATABASE_URL) {
-  try {
-    const parsedUrl = new URL(process.env.DATABASE_URL);
-    console.log(`Database Connection Config: host=${parsedUrl.hostname}, port=${parsedUrl.port}, user=${parsedUrl.username}, database=${parsedUrl.pathname}`);
-  } catch (e) {
-    console.log('Error parsing DATABASE_URL:', e.message);
-  }
-}
-
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
@@ -20,11 +11,7 @@ const pool = new Pool({
     const socket = new net.Socket();
     const originalConnect = socket.connect;
     socket.connect = function(port, host, cb) {
-      let targetHost = host;
-      if (host && host.includes('db.puljxgyccrojbvwlycxd.supabase.co')) {
-        targetHost = 'aws-1-ap-southeast-2.pooler.supabase.com';
-      }
-      return originalConnect.call(this, { port, host: targetHost, family: 4 }, cb);
+      return originalConnect.call(this, { port, host, family: 4 }, cb);
     };
     return socket;
   }

@@ -70,6 +70,18 @@ Create a PostgreSQL database and write down your connection string.
 ---
 
 ## Deployment Configuration
-- **Database:** Supabase (PostgreSQL)
-- **Backend Service:** Render (Web Service)
-- **Frontend Service:** Render (Static Site)
+
+- **Database:** Supabase (PostgreSQL - Connection Pooler URL recommended)
+- **Hosting Service:** Render (Web Service - serves both React frontend assets and Express API)
+
+### Environment Variables on Render
+
+Configure the following settings in your Render dashboard under **Environment**:
+- `PORT`: `5000` (or your preferred port)
+- `DATABASE_URL`: `postgresql://...` (Your Supabase connection pooler URL)
+- `CLIENT_URL`: `https://your-custom-subdomain.onrender.com` (Your live website link)
+- `JWT_SECRET`: A secure random secret key
+- `GEMINI_API_KEY`: Your Google Gemini API Key
+- `EMAIL_USER`: Email address used for sending transactional emails (OTP, etc.)
+- `EMAIL_PASS`: App password generated for the `EMAIL_USER` account
+
