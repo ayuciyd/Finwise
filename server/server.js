@@ -1,8 +1,3 @@
-const dns = require('dns');
-if (dns.setDefaultResultOrder) {
-  dns.setDefaultResultOrder('ipv4first');
-}
-
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -20,6 +15,7 @@ const insightRoutes = require('./routes/insights');
 const adminRoutes = require('./routes/admin');
 
 const app = express();
+app.set('trust proxy', 1);
 
 app.use(helmet({ contentSecurityPolicy: false }));
 const allowedOrigins = [
