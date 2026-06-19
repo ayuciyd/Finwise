@@ -24,7 +24,13 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
-const csrfProtection = csurf({ cookie: true });
+const csrfProtection = csurf({
+  cookie: {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+  }
+});
 app.use(csrfProtection);
 
 app.get('/api/csrf-token', (req, res) => {
