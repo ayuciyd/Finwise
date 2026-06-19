@@ -7,10 +7,7 @@ FinWise is a full-stack personal finance tracker and budget planner designed for
 ```
 FinWise/
 ├── client/     # React + Vite + Tailwind CSS (Frontend)
-├── server/     # Express.js + Node.js (Backend API)<img width="1917" height="836" alt="finwise_2" src="https://github.com/user-attachments/assets/2cd2edea-c582-4d9d-b1b9-c3bce93ccd3f" />
-<img width="1917" height="835" alt="finwise_3" src="https://github.com/user-attachments/assets/e002aeba-3874-415d-87ea-6fe9a4695004" />
-<img width="1917" height="832" alt="finwise_4" src="https://github.com/user-attachments/assets/c2e553d8-f874-4016-9e23-41adc442a3ea" />
-<img width="1917" height="837" alt="finwise_1" src="https://github.com/user-attachments/assets/6173e904-1099-4ede-99f8-227244bcd92c" />
+├── server/     # Express.js + Node.js (Backend API)
 
 └── README.md   # Root documentation
 ```
@@ -23,6 +20,10 @@ FinWise/
 - **Surplus Auto-Transfer:** Scan the previous month for leftover budgets and prompt users to invest them.
 
 ---
+<img width="1917" height="837" alt="finwise_1" src="https://github.com/user-attachments/assets/5bf061be-4109-4bab-9eb3-f2540b76a205" />
+<img width="1917" height="836" alt="finwise_2" src="https://github.com/user-attachments/assets/30861db7-1eac-466e-b660-0abea912c176" />
+<img width="1917" height="835" alt="finwise_3" src="https://github.com/user-attachments/assets/2bac81ed-2175-4ca5-b33d-bb8af4706a24" />
+<img width="1917" height="832" alt="finwise_4" src="https://github.com/user-attachments/assets/22ce4ea2-e361-4665-b865-435ab9f6e457" />
 
 ## Local Setup
 
