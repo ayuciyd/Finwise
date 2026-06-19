@@ -2,6 +2,15 @@ const { Pool } = require('pg');
 const net = require('net');
 require('dotenv').config();
 
+if (process.env.DATABASE_URL) {
+  try {
+    const parsedUrl = new URL(process.env.DATABASE_URL);
+    console.log(`Database Connection Config: host=${parsedUrl.hostname}, port=${parsedUrl.port}, user=${parsedUrl.username}, database=${parsedUrl.pathname}`);
+  } catch (e) {
+    console.log('Error parsing DATABASE_URL:', e.message);
+  }
+}
+
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
