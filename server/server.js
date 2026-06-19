@@ -65,7 +65,7 @@ app.use('/api/admin', adminRoutes);
 app.use(express.static(path.join(__dirname, '../client/dist')));
 
 // Fallback for SPA routing: send index.html
-app.get('(.*)', (req, res, next) => {
+app.get('/(.*)', (req, res, next) => {
   if (req.path.startsWith('/api')) {
     return next();
   }
