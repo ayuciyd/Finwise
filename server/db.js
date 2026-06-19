@@ -2,8 +2,13 @@ const { Pool } = require('pg');
 const net = require('net');
 require('dotenv').config();
 
+let connectionString = process.env.DATABASE_URL;
+if (connectionString && connectionString.includes('db.puljxgyccrojbvwlycxd.supabase.co')) {
+  connectionString = connectionString.replace('db.puljxgyccrojbvwlycxd.supabase.co', 'aws-1-ap-southeast-2.pooler.supabase.com');
+}
+
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: connectionString,
   ssl: {
     rejectUnauthorized: false
   },
