@@ -1,21 +1,20 @@
 const { Pool } = require('pg');
-const dns = require('dns');
+const net = require('net');
 require('dotenv').config();
-
-const ipv4Lookup = (hostname, options, callback) => {
-  if (typeof options === 'function') {
-    callback = options;
-    options = {};
-  }
-  return dns.lookup(hostname, { ...options, family: 4 }, callback);
-};
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false
   },
-  lookup: ipv4Lookup
+  stream: (config) => {
+    const socket = new net.Socket();
+    const originalConnect = socket.connect;
+    socket.connect = function(port, host, cb) {
+      return originalConnect.call(this, { port, host, family: 4 }, cb);
+    };
+    return socket;
+  }
 });
 
 pool.on('error', (err, client) => {
