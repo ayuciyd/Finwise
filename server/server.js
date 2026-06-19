@@ -4,6 +4,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const csurf = require('csurf');
+const path = require('path');
 
 const authRoutes = require('./routes/auth');
 const categoryRoutes = require('./routes/categories');
@@ -15,7 +16,7 @@ const adminRoutes = require('./routes/admin');
 
 const app = express();
 
-app.use(helmet());
+app.use(helmet({ contentSecurityPolicy: false }));
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000'
@@ -59,6 +60,17 @@ app.use('/api/goals', goalRoutes);
 app.use('/api/savings', savingRoutes);
 app.use('/api/insights', insightRoutes);
 app.use('/api/admin', adminRoutes);
+
+// Serve static assets from the client build folder
+app.use(express.static(path.join(__dirname, '../client/dist')));
+
+// Fallback for SPA routing: send index.html
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api')) {
+    return next();
+  }
+  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+});
 
 app.use((err, req, res, next) => {
   if (err.code !== 'EBADCSRFTOKEN') return next(err);
