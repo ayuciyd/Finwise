@@ -7,7 +7,11 @@ FinWise is a full-stack personal finance tracker and budget planner designed for
 ```
 FinWise/
 ├── client/     # React + Vite + Tailwind CSS (Frontend)
-├── server/     # Express.js + Node.js (Backend API)
+├── server/     # Express.js + Node.js (Backend API)<img width="1917" height="836" alt="finwise_2" src="https://github.com/user-attachments/assets/2cd2edea-c582-4d9d-b1b9-c3bce93ccd3f" />
+<img width="1917" height="835" alt="finwise_3" src="https://github.com/user-attachments/assets/e002aeba-3874-415d-87ea-6fe9a4695004" />
+<img width="1917" height="832" alt="finwise_4" src="https://github.com/user-attachments/assets/c2e553d8-f874-4016-9e23-41adc442a3ea" />
+<img width="1917" height="837" alt="finwise_1" src="https://github.com/user-attachments/assets/6173e904-1099-4ede-99f8-227244bcd92c" />
+
 └── README.md   # Root documentation
 ```
 
@@ -73,3 +77,11 @@ Create a PostgreSQL database and write down your connection string.
 
 - **Database:** Supabase (PostgreSQL - Connection Pooler URL recommended)
 - **Hosting Service:** Render (Web Service - serves both React frontend assets and Express API)
+
+## Contact & Support
+
+For inquiries, support, or further information regarding the Finwise project, please contact:
+- **Email:** [finwise9@gmail.com](mailto:finwise9@gmail.com)
+
+---
+*© 2026 Finwise. All rights reserved.*
