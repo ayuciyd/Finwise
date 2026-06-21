@@ -1,13 +1,22 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
+const smtpHost = process.env.SMTP_HOST || process.env.MAIL_SERVER;
+const smtpPort = parseInt(process.env.SMTP_PORT || process.env.MAIL_PORT || '587', 10);
+// Nodemailer secure is true for SSL (port 465). For port 587 or 2525, it uses STARTTLS (secure should be false).
+const smtpSecure = process.env.SMTP_SECURE === 'true' || smtpPort === 465;
+
+const emailUser = process.env.EMAIL_USER || process.env.MAIL_USERNAME;
+const emailPass = process.env.EMAIL_PASS || process.env.MAIL_PASSWORD;
+const defaultSender = process.env.MAIL_DEFAULT_SENDER || `"FinWise" <${emailUser}>`;
+
 const transporterConfig = {
-  host: process.env.SMTP_HOST,
-  port: parseInt(process.env.SMTP_PORT || '587', 10),
-  secure: process.env.SMTP_SECURE === 'true', // true for 465, false for 587
+  host: smtpHost,
+  port: smtpPort,
+  secure: smtpSecure,
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
+    user: emailUser,
+    pass: emailPass
   },
   family: 4, // Force IPv4 to prevent Render connection hangs
   connectionTimeout: 10000,
@@ -16,7 +25,7 @@ const transporterConfig = {
 };
 
 // Fall back to Gmail optimizations if no custom SMTP host is provided
-if (!process.env.SMTP_HOST) {
+if (!smtpHost) {
   transporterConfig.service = 'gmail';
   transporterConfig.port = 465;
   transporterConfig.secure = true;
@@ -26,7 +35,7 @@ if (!process.env.SMTP_HOST) {
 const transporter = nodemailer.createTransport(transporterConfig);
 
 const sendEmail = async ({ to, subject, html }) => {
-  if (process.env.EMAIL_USER === 'your_email@gmail.com') {
+  if (!emailUser || emailUser === 'your_email@gmail.com') {
     console.log('\n=============================================');
     console.log(`[DEVELOPMENT MODE] Email to: ${to}`);
     console.log(`Subject: ${subject}`);
@@ -37,7 +46,7 @@ const sendEmail = async ({ to, subject, html }) => {
 
   try {
     const mailOptions = {
-      from: `"FinWise" <${process.env.EMAIL_USER}>`,
+      from: defaultSender,
       to,
       subject,
       html
