@@ -48,6 +48,7 @@ const Dashboard = () => {
 
   // Modal states
   const [isCategoryModalOpen, setCategoryModalOpen] = useState(false);
+  const [categoryToEdit, setCategoryToEdit] = useState(null);
   const [isGoalModalOpen, setGoalModalOpen] = useState(false);
   const [isTransactionModalOpen, setTransactionModalOpen] = useState(false);
   const [isSummaryOpen, setSummaryOpen] = useState(false);
@@ -161,6 +162,23 @@ const Dashboard = () => {
     }
   };
 
+  const handleEditCategory = (category) => {
+    setCategoryToEdit(category);
+    setCategoryModalOpen(true);
+  };
+
+  const handleDeleteCategory = async (categoryId) => {
+    if (window.confirm("Are you sure you want to delete this category? All transactions in this category will be uncategorized.")) {
+      try {
+        await api.delete(`/categories/${categoryId}`);
+        toast.success("Category deleted successfully!");
+        fetchData();
+      } catch (err) {
+        toast.error("Failed to delete category");
+      }
+    }
+  };
+
 
   // Month-by-month filtering helper
   const getUniqueMonths = () => {
@@ -232,7 +250,7 @@ const Dashboard = () => {
                   <TrendingUp size={14} /> <span className="whitespace-nowrap">Summary</span>
                 </button>
                 <button onClick={() => handleAddTransaction()} className="bg-finwise-green text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-medium hover:bg-finwise-medium transition-colors flex items-center justify-center gap-1.5 shadow-sm flex-1 sm:flex-initial">
-                  <Plus size={14} /> <span className="whitespace-nowrap">Add Tx</span>
+                  <Plus size={14} /> <span className="whitespace-nowrap">Add Transaction</span>
                 </button>
               </div>
             </div>
@@ -376,6 +394,8 @@ const Dashboard = () => {
                         key={category.id} 
                         category={category} 
                         onAddExpense={handleAddTransaction}
+                        onEdit={handleEditCategory}
+                        onDelete={handleDeleteCategory}
                       />
                     ))
                   )}
@@ -494,7 +514,15 @@ const Dashboard = () => {
       </main>
 
       {/* Modals */}
-      <AddCategoryModal isOpen={isCategoryModalOpen} onClose={() => setCategoryModalOpen(false)} onSuccess={fetchData} />
+      <AddCategoryModal 
+        isOpen={isCategoryModalOpen} 
+        onClose={() => {
+          setCategoryModalOpen(false);
+          setCategoryToEdit(null);
+        }} 
+        onSuccess={fetchData} 
+        categoryToEdit={categoryToEdit}
+      />
       <AddGoalModal isOpen={isGoalModalOpen} onClose={() => setGoalModalOpen(false)} onSuccess={fetchData} />
       <AddTransactionModal 
         isOpen={isTransactionModalOpen} 

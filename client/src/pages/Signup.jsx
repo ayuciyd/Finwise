@@ -61,7 +61,7 @@ const Signup = () => {
         rememberMe: true
       });
 
-      navigate('/onboarding');
+      navigate('/dashboard');
     } catch (err) {
       setError(err.response?.data?.error || 'Invalid or expired OTP');
     } finally {
